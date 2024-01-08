@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 @ResponseBody
 @RequestMapping("hello")
 public class HelloController {
+
     //handle request at path http://localhost:8080/hello
 //    @GetMapping("hello")
 //    @ResponseBody
@@ -38,9 +39,43 @@ public class HelloController {
                 "<body>" +
                 "<form action='hello' method='post'>" + //submit a request to /hello
                 "<input type='text' name='name'>" +
+                "<select name= 'languages' id= 'language-select'>" +
+                "<option value=''>--Please choose an option--</option>" +
+                "<option value='English'>English</option>" +
+                "<option value='Indonesian'>Indonesian</option>" +
+                "<option value='Batak'>Batak</option>" +
+                "<option value='Kiswahili'>Kiswahili</option>" +
+                "<option value='Norwegian'>Norwegian</option>" +
                 "<input type='submit' value='Greet me!'>" +
                 "</form>" +
                 "</body>" +
                 "</html>";
+    }
+
+    @RequestMapping(method= RequestMethod.POST)
+    public String helloPost(@RequestParam String name, @RequestParam String language) {
+        if (name==null) {
+            name = "World";
+        }
+        else if (language.equals("Indonesian") && name==null){
+            name = "Dunia";
+        } else if (language.equals("Batak") && name==null) {
+            name = "Portibi";
+        }
+        return createMessage(name, language);
+    }
+
+    public static String createMessage(String n, String l) {
+        String greeting = "";
+
+        if (l.equals("English")) {
+            greeting = "Hello";
+        } else if (l.equals("Indonesian")) {
+            greeting = "Halo";
+        } else if (l.equals("Batak")) {
+            greeting = "Horas";
+        }
+
+        return greeting + " " + n;
     }
 }
