@@ -37,9 +37,9 @@ public class HelloController {
     public String helloForm() {
         return "<html>" +
                 "<body>" +
-                "<form action='hello' method='post'>" + //submit a request to /hello
+                "<form action='hello/form' method='post'>" + //submit a request to /hello
                 "<input type='text' name='name'>" +
-                "<select name= 'languages' id= 'language-select'>" +
+                "<select name= 'language' id= 'language'>" +
                 "<option value=''>--Please choose an option--</option>" +
                 "<option value='English'>English</option>" +
                 "<option value='Indonesian'>Indonesian</option>" +
@@ -52,16 +52,20 @@ public class HelloController {
                 "</html>";
     }
 
-    @RequestMapping(method= RequestMethod.POST)
+    @RequestMapping(value = "hello/form", method= RequestMethod.POST)
     public String helloPost(@RequestParam String name, @RequestParam String language) {
-        if (name==null) {
+        if (name=="" && language.equals("English")) {
             name = "World";
-        }
-        else if (language.equals("Indonesian") && name==null){
+        } else if (name=="" && language.equals("Indonesian")) {
             name = "Dunia";
-        } else if (language.equals("Batak") && name==null) {
+        } else if (name=="" && language.equals("Batak")) {
             name = "Portibi";
+        } else if (name=="" && language.equals("Kiswahili")) {
+            name = "Dunia";
+        } else if (name=="" && language.equals("Norwegian")) {
+            name = "Verden";
         }
+
         return createMessage(name, language);
     }
 
@@ -74,8 +78,14 @@ public class HelloController {
             greeting = "Halo";
         } else if (l.equals("Batak")) {
             greeting = "Horas";
+        } else if (l.equals("Kiswahili")) {
+            greeting = "Habari";
+        } else if (l.equals("Norwegian")) {
+            greeting = "Hallo";
         }
 
-        return greeting + " " + n;
+        return "<html>" +
+                "<h1 style= 'color: red'>" + greeting + ", " + n + "!</h1>" +
+                "</html>";
     }
 }
